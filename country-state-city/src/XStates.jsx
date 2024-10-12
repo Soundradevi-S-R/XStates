@@ -25,7 +25,7 @@ function XStates ({countries}){
 
     }catch(e){
 
-       // console.error(e.message);        
+        console.error(e.message);        
     }
 }
 
@@ -42,7 +42,7 @@ function XStates ({countries}){
     
         }catch(e){
     
-           // console.error(e.message);        
+           console.error(e.message);        
         }
     
        }
@@ -94,10 +94,10 @@ function XStates ({countries}){
                 id="countries"
                 onChange={selectCountry} 
                 >
-            <option value="none" selected hidden>Select Country</option> disabled hidden
+            <option value="none" selected hidden>Select Country</option>
             {
                 
-            countries.map((coun)=>(<option value={coun.value} defaultValue="Select Country" >{coun}</option>))
+            countries.map((coun)=>(<option value={coun.value} >{coun}</option>))
             }
             
         </select>
@@ -123,7 +123,7 @@ function XStates ({countries}){
         <br/>
         <br/>
         { city!== "" ?              
-                (<label>You selected <h3>{city}</h3>,{state},{country}</label>): (<></>)}             
+                (<div with="300px"><span>You selected <b>{city}</b>, {state}, {country}</span></div>): (<></>)}           
                 
         
   
@@ -133,4 +133,4 @@ function XStates ({countries}){
 
 }export default XStates;
 
-
+//https://x-states-lovat.vercel.app/ 
