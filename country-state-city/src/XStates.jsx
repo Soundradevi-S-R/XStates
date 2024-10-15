@@ -1,87 +1,117 @@
 import React, { useState,useEffect } from "react";
 
-function XStates ({countries}){
+function XStates (){
 
+    const [countriesList,setCountriesList] = useState([]);
     const [stateList,setStateList] = useState([]);
     const [cityList,setCityList] = useState([]);
+  
+    const [country,setCountry] = useState('');
+    const [state,setState] = useState('')
+    const [city,setCity] = useState('');
 
-   const [country,setCountry] = useState('');
-   const [state,setState] = useState('')
-   const [city,setCity] = useState('');
+   
+   
+     const endPoint = "https://crio-location-selector.onrender.com/"; 
 
-   const endPoint = "https://crio-location-selector.onrender.com/"
-
-
-  async function apiData  (country) {
+ 
+ 
+    async function getCountryList() {
+      
+       try{
+       const country_endpoint = "https://crio-location-selector.onrender.com/countries"
+ 
+       const result= await fetch(`${country_endpoint}`).then((response) => response.json())
+       console.log(result);   
+       setCountriesList(result); 
+ 
+      }catch(e){
+       console(e.response.message);
+      }     
+ 
+     } 
+ 
+  async function getStatesAPI  (country) {
 
     try{
         const response = await fetch(`${endPoint}country=${country}/states`);
      
-        let stateData = await response.json();    
-        console.log("got states for selected country", stateData);
-        //return stateData;
-
-        setStateList(stateData);
+         let stateData = await response.json();    
+         console.log("got states for selected country", stateData);    
+         setStateList(stateData);
 
     }catch(e){
-
-        console.error(e.message);        
+        console.error("Error fetching States"+e.message);        
     }
 }
 
-    async function CityData  (state) {
+    async function getCityAPI  (state) {
 
         try{
             const response = await fetch(`${endPoint}country=${country}/state=${state}/cities`);
          
             let cityData = await response.json();    
-            console.log("got cities for selected state", cityData);
-            //return stateData;
+            console.log("got cities for selected state", cityData);          
     
             setCityList(cityData);
     
         }catch(e){
     
-           console.error(e.message);        
+           console.error("Error fetching Cities"+e.message);        
         }
     
        }
    
 
-  const selectCountry=(e)=>{
-    const ctry = e.target.value;
-    setCountry(ctry);
-    console.log("selected country =>"+ ctry);
-        try{
-            apiData(ctry);
-        }catch(e){
-        console.log(e.response.message);
-        }   
+  let selectCountry=(e)=>{    
+    setCountry(e.target.value);
+    console.log("selected country =>"+ country);       
   }
 
-  const selectState = (e) =>{
-    const s_state = e.target.value;
-    setState(s_state);
-    console.log("selected state =>"+ s_state);
-        try{
-            CityData(s_state);
-        }catch(e){
-        console.log(e.response.message);
-        }   
+  let selectState = (e) =>{     ;
+    setState(e.target.value);
+    console.log("selected state =>"+ state);          
   }
 
-  const selectCity =(e) =>{
-    const s_city = e.target.value;
-    setCity(s_city);
-    console.log("selected city =>" + s_city);    
+  let selectCity =(e) =>{   
+    setCity(e.target.value);
+    console.log("selected city =>" + city);    
   }
 
+  // set countries while loading initially
     useEffect(()=>{
-        setStateList([]);
-        setCityList([]);
-        setCity("");
+       
+        try{
+            getCountryList();
+        }catch(e){
+        console.log(e.response.message);
+        }
+    },[]);
 
-    },[country]);
+// get states when country is selected 
+     useEffect(()=>{    
+        if(country !== ""){
+            console.log("change in country");
+            try{
+                getStatesAPI(country);
+            }catch(e){
+            console.log(e.response.message);
+            }
+        }   
+     },[country]);
+
+// get cities  when state is selected 
+     useEffect(() => {
+       
+            if(state !== ""){
+                console.log("change in state");
+                try{
+                    getCityAPI(state);
+                }catch(e){
+                console.log(e.response.message);
+                } 
+            } 
+         },[state]);
 
 
     return (
@@ -93,42 +123,45 @@ function XStates ({countries}){
         <select name="countries-list" 
                 id="countries"
                 onChange={selectCountry} 
+                value={country}
+                
                 >
-            <option value="none" selected hidden>Select Country</option>
+           <option value="Select Country" selected>Select Country</option>
             {
                 
-            countries.map((coun)=>(<option value={coun.value} >{coun}</option>))
+                countriesList.map((coun)=>(<option value={coun.value} key={coun.value} >{coun}</option>))
             }
             
         </select>
 
         <select name="state-list"
                  id="states"
-                 onChange={selectState}>
+                 onChange={selectState}
+                 value={state}>
             <option value="none"  disabled selected>Select State</option>
             {
-        stateList.map((st) => (<option value={st.value}>{st}</option>))
+        stateList.map((st) => (<option value={st.value} key={st.value}>{st}</option>))
             }
             
         </select>
         <select name="city-list" 
                 id="cities"
-                onChange={selectCity}>
+                onChange={selectCity}
+                value={city}
+               >
         <option value="none"  disabled selected>Select city</option>
             {
-        cityList.map((cty) => (<option value={cty.value}>{cty}</option>))
+        cityList.map((cty) => (<option value={cty.value} key={cty.value}>{cty}</option>))
             }
             
         </select>
         <br/>
         <br/>
         { city!== "" ?              
-                (<div with="300px"><span>You selected <b>{city}</b>, {state}, {country}</span></div>): (<></>)}           
+                (<div with="300px"><span>You selected <b>{city}</b>, {state}, {country}</span></div>): (<></>)
+        }      
                 
-        
-  
-    
-    </div>);
+        </div>);
 
 
 }export default XStates;
