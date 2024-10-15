@@ -130,7 +130,7 @@ function XStates (){
            <option value="Select Country" selected>Select Country</option>
             {
                 
-                countriesList.map((coun)=>(<option value={coun.value} key={coun.value} >{coun}</option>))
+                countriesList.map((coun)=>(<option value={coun} key={coun}  >{coun}</option>))
             }
             
         </select>
@@ -141,7 +141,7 @@ function XStates (){
                  value={state}>
             <option value="none"  disabled selected>Select State</option>
             {
-        stateList.map((st) => (<option value={st.value} key={st.value}>{st}</option>))
+        stateList.map((st) => (<option value={st} key={st} >{st}</option>))
             }
             
         </select>
@@ -152,7 +152,7 @@ function XStates (){
                >
         <option value="none"  disabled selected>Select city</option>
             {
-        cityList.map((cty) => (<option value={cty.value} key={cty.value}>{cty}</option>))
+        cityList.map((cty) => (<option value={cty} key={cty}>{cty}</option>))
             }
             
         </select>
