@@ -26,7 +26,7 @@ function XStates (){
        setCountriesList(result); 
  
       }catch(e){
-       console("Error while fetching the Countries",e);
+       console.error("Error while fetching the Countries",e);
       }     
  
      } 
@@ -158,8 +158,8 @@ function XStates (){
         </select>
         <br/>
         <br/>
-        { city!== "" ?              
-                (<div with="300px"><span>You selected <b>{city}</b>, {state}, {country}</span></div>): (<></>)
+        { country && state && city &&             
+                (<div with="300px"><span>You selected <b>{city}</b>, {state}, {country}</span></div>)
         }      
                 
         </div>);
