@@ -22,11 +22,11 @@ function XStates (){
        const country_endpoint = "https://crio-location-selector.onrender.com/countries"
  
        const result= await fetch(`${country_endpoint}`).then((response) => response.json())
-       console.log(result);   
+      // console.log(result);   
        setCountriesList(result); 
  
       }catch(e){
-       console(e.response.message);
+       console("Error while fetching the Countries",e);
       }     
  
      } 
@@ -37,11 +37,11 @@ function XStates (){
         const response = await fetch(`${endPoint}country=${country}/states`);
      
          let stateData = await response.json();    
-         console.log("got states for selected country", stateData);    
+         //console.log("got states for selected country", stateData);    
          setStateList(stateData);
 
     }catch(e){
-        console.error("Error fetching States"+e.message);        
+        console.error("Error while fetching the States", e);        
     }
 }
 
@@ -51,13 +51,13 @@ function XStates (){
             const response = await fetch(`${endPoint}country=${country}/state=${state}/cities`);
          
             let cityData = await response.json();    
-            console.log("got cities for selected state", cityData);          
+        //    console.log("got cities for selected state", cityData);          
     
             setCityList(cityData);
     
         }catch(e){
     
-           console.error("Error fetching Cities"+e.message);        
+           console.error("Error while fetching the Cities", e);        
         }
     
        }
@@ -94,6 +94,7 @@ function XStates (){
             console.log("change in country");
             try{
                 getStatesAPI(country);
+               // setCityList([]);
             }catch(e){
             console.log(e.response.message);
             }
